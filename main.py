@@ -71,7 +71,7 @@ def eval_fitness(generation, config):
         genome.fitness = 0 
 
         # Create the neural network using genome and config
-        
+        net = neat.nn.FeedForwardNetwork.create(genome, config)
         
         pipe = Pipe(250)
         bird = Bird() 
@@ -98,12 +98,12 @@ def eval_fitness(generation, config):
             bird.display()
             
             # Check if bird.y become greater then 600 or less then 0. Also stop if bird collides with pipe use bird.colliderect(pipe) to check collision
-            
+            if bird.colliderect(pipe) or bird.y > 600 or bird.y < 0:
             
                 # Increment the genomeCount
-                
+                genomeCount =genomeCount + 1
                 # Add break statement to stop the game for current genome
-
+                break
             if groundx < -330:
                 groundx=0
 
@@ -120,11 +120,11 @@ def eval_fitness(generation, config):
 
     
 # Load configuration file in variable config
-
+config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction,neat.DefaultSpeciesSet, neat.DefaultStagnation,'config-feedforward.txt')
 # Create a population "p"
-
+p = neat.Population(config)
 # Run the genetic algorithm for population "p" and pass "eval_fitness" function
-
+winner = p.run(eval_fitness,7)
 
   
 
